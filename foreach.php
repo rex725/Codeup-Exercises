@@ -21,3 +21,13 @@ foreach($things as $thing) {
 		fwrite(STDOUT, "{$thing} is scalar.\n");
 	}
 }
+
+foreach ($things as $thing) {
+	echo "$thing\n";
+	if (is_array($thing)) {
+		$array = $thing;
+		foreach ($array as $elements) {
+			echo " $elements\n";
+		}
+	}
+}
