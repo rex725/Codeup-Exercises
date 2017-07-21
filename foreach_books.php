@@ -22,10 +22,20 @@ $books = array(
         'pages' => 544
     )
 );
-
+echo $books['The Hobbit']['published'];
 foreach($books as $key => $value) {
 	echo "$key".PHP_EOL.PHP_EOL;
 	foreach($value as $key => $value) {
 		echo " {$key}: {$value}".PHP_EOL;
+	}
+}
+
+fwrite(STDOUT, 'BOOKS WRITTEN AFTER 1950'.PHP_EOL);
+foreach($books as $key => $value) {
+	if ($books[$key]['published'] >= 1950) {
+		echo "$key".PHP_EOL.PHP_EOL;
+		foreach($value as $key => $value) {
+			echo " {$key}: {$value}".PHP_EOL;
+		}
 	}
 }
