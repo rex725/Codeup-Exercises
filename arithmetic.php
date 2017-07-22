@@ -24,4 +24,9 @@ function divide($a, $b)
 }
 echo divide(100, 5).PHP_EOL;
 
+function modulus($a, $b) 
+{
+	return $a % $b;
+}
+echo modulus(5, 3).PHP_EOL;
 // Add code to test your functions here
