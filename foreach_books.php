@@ -69,7 +69,6 @@ fwrite(STDOUT, 'NO DUPLICATE BOOKS'.PHP_EOL);
 $authors = [];
 foreach($books as $key => $value) {
 	array_push($authors, $books[$key]['author']);
-
 	for ($i = 0; $i < count($authors); $i++) {
 		if ($i >= 1) {
 			if ($books[$key]['author'] == $authors[$i - 1]) {
