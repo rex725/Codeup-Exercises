@@ -3,8 +3,8 @@
 //divisible by two or not.
 function isEven($number) 
 {
-	if($number % 2 === 0) {
-		return true;
+	if(is_numeric($number)) {
+		return $number % 2 === 0;
 	} else {
 		return false;
 	}
@@ -12,7 +12,11 @@ function isEven($number)
 //Write a function called isVowel that returns true or false if the provided input is the letter 'a', 'e', 'i', 'o', or 'u'
 function isVowel($letter) 
 {
-	if ($letter == "a" || $letter == "e" || $letter == "i" || $letter == "o" || $letter == "u") {
+	if(!is_string($letter) && count($letter) !== 1) {
+		return flase;
+	}
+	$letter = strtolower($letter);
+	if ($letter === "a" || $letter === "e" || $letter === "i" || $letter === "o" || $letter === "u") {
 		return true;
 	} else {
 		return false;
@@ -31,7 +35,7 @@ function first($var)
 function second($var)
 {
 	if(is_string($var)){
-		return substr($var, 1, 2);
+		return substr($var, 1, 1);
 	} else if(is_array($var)) {
 		return $var[1];
 	}
@@ -49,7 +53,7 @@ function last($var)
 function reverse($var)
 {
 	if(is_string($var)){
-		return substr($var, (strlen($var) - 1), 1);
+		return strrev($var);
 	} else if(is_array($var)) {
 		return array_reverse($var);
 	}	
@@ -61,7 +65,7 @@ function random($var)
 		$randomNumber = rand(0, strlen($var));
 		return substr($var, $randomNumber, 1);
 	} else if(is_array($var)) {
-		return array_rand($var);
+		return $var[array_rand($var)];
 	}	
 }
 
