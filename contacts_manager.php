@@ -51,8 +51,34 @@ function runMenuOptions($filename, $contacts)
 			fwrite(STDOUT, "Please enter a name and number.\n Ex. Joe Shmoe|1234567890" . PHP_EOL);
 			$newContact = trim(fgets(STDIN));
 			$handle = fopen($filename, 'a');
-			fwrite($handle, PHP_EOL . $newContact);
-			fclose($handle);
+			foreach($contacts as $contact) {
+				if(array_search($newContact, $contact) === false){
+					$contactFound = false;
+				} else {
+					$contactFound = true;
+				}
+			}
+			if($contactFound === false) {
+				$contactCheckForNumber = explode("|", $newContact);
+				if (isset($contactCheckForNumber[1]) && is_numeric($contactCheckForNumber[1])) {
+					fwrite($handle, PHP_EOL . $newContact);
+					fclose($handle);
+				} else {
+					while (!isset($contactCheckForNumber[2]) || !is_numeric($contactCheckForNumber[2])) {
+						fwrite(STDOUT, "Please enter a number.\n Ex. 3334445555" . PHP_EOL);
+						$numberToAdd = trim(fgets(STDIN));
+						array_splice($contactCheckForNumber, 1, 2);
+						array_push($contactCheckForNumber, "|" , $numberToAdd);
+						var_dump($contactCheckForNumber);
+						$newContactWithNameAndNumber = $newContact . "|" . $numberToAdd;
+					}
+					fwrite($handle, PHP_EOL . $newContactWithNameAndNumber);
+					fclose($handle); 
+				}
+			} else {
+				fwrite(STDOUT, "There's already a contact named $newContact. Do you want to overwrite it? (Yes/No)" . PHP_EOL);
+			}
+			
 		}
 		if($input === "3") {
 			fwrite(STDOUT, "What name would you like to search for?");
@@ -84,7 +110,7 @@ function runMenuOptions($filename, $contacts)
 				}
 			}
 			if ($contactFound === false) {
-				echo "$name is not on your contact list." . PHP_EOL;
+				echo "$name is not on your contact list." . PHP_EOLv;
 			} else {
 				echo "$name has been deleted." . PHP_EOL;
 			}
