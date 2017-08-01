@@ -52,12 +52,13 @@ function runMenuOptions($filename, $contacts)
 			$newContact = trim(fgets(STDIN));
 			$handle = fopen($filename, 'a');
 			foreach($contacts as $contact) {
-				if(array_search($newContact, $contact) === false){
+				if(array_search($newContact, $contact) == false){
 					$contactFound = false;
 				} else {
 					$contactFound = true;
 				}
 			}
+			var_dump($contactFound);
 			if($contactFound === false) {
 				$contactCheckForNumber = explode("|", $newContact);
 				if (isset($contactCheckForNumber[1]) && is_numeric($contactCheckForNumber[1])) {
@@ -69,7 +70,6 @@ function runMenuOptions($filename, $contacts)
 						$numberToAdd = trim(fgets(STDIN));
 						array_splice($contactCheckForNumber, 1, 2);
 						array_push($contactCheckForNumber, "|" , $numberToAdd);
-						var_dump($contactCheckForNumber);
 						$newContactWithNameAndNumber = $newContact . "|" . $numberToAdd;
 					}
 					fwrite($handle, PHP_EOL . $newContactWithNameAndNumber);
@@ -77,6 +77,33 @@ function runMenuOptions($filename, $contacts)
 				}
 			} else {
 				fwrite(STDOUT, "There's already a contact named $newContact. Do you want to overwrite it? (Yes/No)" . PHP_EOL);
+				$reply = strtolower(trim(fgets(STDIN)));
+				if ($reply === "yes") {
+					foreach($contacts as $key => $contact) {
+						if(array_search($newContact, $contact) !== false) {
+							var_dump($contacts[$key]);
+							unset($contacts[$key]);
+						}
+					}
+					$contactCheckForNumber = explode("|", $newContact);
+					if (isset($contactCheckForNumber[1]) && is_numeric($contactCheckForNumber[1])) {
+							fwrite($handle, PHP_EOL . $newContact);
+							fclose($handle);
+						} else {
+							while (!isset($contactCheckForNumber[2]) || !is_numeric($contactCheckForNumber[2])) {
+								fwrite(STDOUT, "Please enter a number.\n Ex. 3334445555" . PHP_EOL);
+								$numberToAdd = trim(fgets(STDIN));
+								array_splice($contactCheckForNumber, 1, 2);
+								array_push($contactCheckForNumber, "|" , $numberToAdd);
+								$newContactWithNameAndNumber = [$newContact, $numberToAdd];
+							}
+							array_push($contacts, $newContactWithNameAndNumber);
+							foreach($contacts as $contact) {
+								$contact = implode("|", $contact);
+								fwrite($handle, PHP_EOL . $contact);
+							};
+					} 
+				}
 			}
 			
 		}
