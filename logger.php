@@ -13,5 +13,5 @@ function logError($message) {
 	logMessage("ERROR", $message);
 }
 logInfo("This is an info message.");
-logError("This is an info message.");
+logError("This is an error message.");
 // echo date("Y") . "-" . date("m") . "-" . date("d") . ".log";
